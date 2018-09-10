@@ -1,0 +1,18 @@
+body, ul, p, h1, h2, h3, h4, h5, h6 dl, dd, input, select, form,.row,.wea_fore{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-color: lightblue;
+    filter:alpha(opacity=60);
+}
+/*去除链接下划线*/
+a {
+    text-decoration: none;
+}
+
+/*去除列表标签的前面的点*/
+ul {
+   list-style: none;
+}
+

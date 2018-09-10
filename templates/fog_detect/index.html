@@ -1,0 +1,179 @@
+{% load staticfiles %}
+{% load cache %}
+{% cache 120 index_cache %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>雾霾探测</title>
+    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+
+
+    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/modules/oldie.js"></script>
+    <script type="text/javascript" src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+    <script type="text/javascript" src="{% static 'js/tmp_hum.js' %}"></script>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Bid8SdiD5e0GcoBGS6ZM7wFcwIItQgpZ"></script>
+    <link rel="stylesheet"  type="text/css" href="{% static 'css/bootstrap4.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/new_index.css' %}">
+
+    <script type="text/javascript">
+
+    </script>
+
+</head>
+<!--新页面-->
+<body>
+    <!-- 导航条 -->
+    <nav class="navbar navbar-light bg-light">
+
+        <img src="{% static 'images/icons/brand1.png' %}" width="27" height="27" alt="" class="d-inline-block align-top">天气助手
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form class="form-inline my-2 my-lg-0 pull-right navbar-form" method="get" action="{% url 'fog_detect:get_loc_wea' %}">
+
+                <input class="form-control mr-sm-2" type="search" placeholder="请输入城市" aria-label="Search" name="city" id="city">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="btn_nav">前往该城市</button>
+            </form>
+        </div>
+    </nav>
+    <!-- 城市显示-->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="margin-bottom: 0">
+            <li class="breadcrumb-item"><img src="{% static 'images/icons/location1.png' %}" alt=""></li>
+            {% if  admin_area == location %}
+                <li class="breadcrumb-item" id="cnty"><span class="badge badge-danger">{{ cnty }}</span></li>
+                <li class="breadcrumb-item" id="admin_area"><span class="badge badge-primary">{{ admin_area }}</span></li>
+            {% else %}
+                <li class="breadcrumb-item" id="cnty"><span class="badge badge-danger">{{ cnty }}</span></li>
+                <li class="breadcrumb-item" id="admin_area"><span class="badge badge-primary">{{ admin_area }}</span></li>
+                <li class="breadcrumb-item" id="location"><span class="badge badge-success">{{ location }}</span></li>
+            {% endif %}
+
+
+        </ol>
+    </nav>
+    <button type="button" class="btn btn-outline-info btn-lg btn-block" id="rush">定位到当前城市</button>
+
+    <!-- 天气详情-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-5 col-lg-6">
+                <div class="row">
+                    <div class="col-xs-5 " style="margin-bottom: 10px">
+                        <div style="font-size: 170px;display: inline-block;width: 100px">
+                            {{ tmp }}
+                        </div>
+                    </div>
+                    <div class="col-xs-7" style="position: relative">
+                        <div style="position: relative;left: 110px;top: 30px;">
+                            <span style="font-size: 25px">{{ aqi }} {{ qlty }}</span>
+                        </div>
+                        <div  style="position: relative;left: 90px;top: 30px;"><span style="font-size: 30px">℃</span></div>
+                        <div  style="position: relative;left: 140px;top: -15px;"><span style="font-size: 30px">{{ cond_txt }}</span></div>
+                        <div style="position: relative;left: 90px;top: -1px;"><img src={{ cond_code }} alt="天气详情"></div>
+                        <div style="position: relative;left: -110px;top: -215px;" class="badge badge-info">上次更新:{{ loc }}</div>
+                    </div>
+                </div>
+                <div class="row" style="font-size: 20px">
+                    <span>湿度:{{ hum }}%</span>
+                    &nbsp;&nbsp;&nbsp;
+                    <span>{{ wind_dir }} {{ wind_sc }}级</span>
+                    <hr>
+                    <p>主要污染物浓度(μg/m³)</p>
+                    <p>
+                    <span class="badge badge-secondary">PM10: {{ pm10 }}</span>
+                    <span class="badge badge-secondary" id="pm25">PM2.5: {{ pm25 }}</span>
+                    </p>
+                    <br>
+                    <p>
+                    <span class="badge badge-danger">SO2: {{ so2 }}</span>
+                    <span class="badge badge-success">NO2: {{ no2 }}</span>
+                    <span class="badge badge-warning">CO: {{ co }}</span>
+                    </p>
+
+
+                </div>
+                <hr>
+            </div>
+            <hr>
+            <div class="col-xs-7 col-lg-6">
+                <h3>Tips</h3>
+                <span class="badge badge-primary">穿衣</span>
+                <p  class="alert alert-primary ">{{ dsg }}</p>
+                <span class="badge badge-success">健康</span>
+                <p class="alert alert-success">{{ flu }}</p>
+                <span class="badge badge-danger">空气</span>
+                <p class="alert alert-danger">{{ air }}</p>
+                <span class="badge badge-info">运动</span>
+                <p class="alert alert-info">{{ sports }}</p>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <!-- 温/湿度折线图-->
+    <div id="container" style="height:400px;min-width:300px"></div>
+    <div class="message"></div>
+    <hr>
+
+    <!-- 未来三天天气预报-->
+    <div class="container-fluid">
+        <button type="button" class="btn btn-info btn-lg btn-block">未来三天天气预报</button>
+        <table class="table table-hover" style="margin: 0px">
+            <tr class="table-success">
+                <td>日期</td>
+                <td>气温</td>
+                <td>描述</td>
+                <td>降水概率</td>
+                <td>风</td>
+                <td>空气</td>
+            </tr>
+            <tr class="table-danger">
+                <th>今</th>
+                <td>{{ tmp_min1 }}/{{ tmp_max1 }}℃</td>
+                <td>{{ cont_txt_d1 }}/{{ cond_txt_n1 }}</td>
+                <td>{{ pop1 }}%</td>
+                <td>{{ wind_dir1 }}/{{ wind_sc1 }}级</td>
+                <td>55/优</td>
+            </tr>
+            <tr class="table-warning">
+                <th>明</th>
+                <td>{{ tmp_min2 }}/{{ tmp_max2 }}℃</td>
+                <td>{{ cont_txt_d2 }}/{{ cond_txt_n2 }}</td>
+                <td>{{ pop2 }}%</td>
+                <td>{{ wind_dir1 }}/{{ wind_sc2 }}级</td>
+                <td>55/优</td>
+            </tr>
+            <tr>
+                <th>后</th>
+                <td>{{ tmp_min3 }}/{{ tmp_max3 }}℃</td>
+                <td>{{ cont_txt_d3 }}/{{ cond_txt_n3 }}</td>
+                <td>{{ pop3 }}%</td>
+                <td>{{ wind_dir3 }}/{{ wind_sc3 }}级</td>
+                <td>55/优</td>
+            </tr>
+        </table>
+        <hr>
+
+    </div>
+    <!-- 尾部信息-->
+    <div class="container-fluid" style="text-align: center">
+        <p>来自noobcoder</p>
+    </div>
+    
+
+</body>
+</html>
+
+{% endcache %}

@@ -1,0 +1,138 @@
+body, ul, p, h1, h2, h3, h4, h5, h6 dl, dd, input, select, form,.row,.wea_fore{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-color: lightblue;
+    filter:alpha(opacity=60);
+}
+/*去除链接下划线*/
+a {
+    text-decoration: none;
+}
+
+/*去除列表标签的前面的点*/
+ul {
+   list-style: none;
+}
+
+
+/*#header{*/
+    /*height: 50px;*/
+/*}*/
+
+/*#a1{*/
+    /*display: inline-block;*/
+    /*width: auto;*/
+    /*height: 30px;*/
+    /*line-height: 30px;*/
+    /*margin: 10px;*/
+/*}*/
+
+
+/*#navb {*/
+    /*background-color: deepskyblue;*/
+    /*height: 50px;*/
+/*}*/
+/*#navb span{*/
+    /*display: inline-block;*/
+    /*margin-left: 45%;*/
+    /*line-height: 50px;*/
+/*}*/
+
+/*#wea_now{*/
+    /*position: relative;*/
+    /*margin: 0;*/
+    /*padding: 0;*/
+/*}*/
+
+/*#loc,#tmp,#cond_code,#cond_txt{*/
+    /*position: relative;*/
+/*}*/
+
+/*#tmp{*/
+    /*width: 180px;*/
+    /*height: 150px;*/
+    /*font-size: 150px;*/
+    /*z-index: 9999;*/
+/*}*/
+/*#cond_code{*/
+    /*width: 100px;*/
+    /*height: 100px;*/
+    /*top: -114px;*/
+    /*right: -165px;*/
+    /*z-index: 9995;*/
+/*}*/
+
+/*#cond_txt{*/
+    /*width: 50px;*/
+    /*height: 50px;*/
+    /*font-size: 30px;*/
+    /*z-index: 9993;*/
+    /*top: -165px;*/
+    /*right: -268px;*/
+/*}*/
+
+
+/*#cel{*/
+    /*width: 50px;*/
+    /*height: 50px;*/
+    /*position: relative;*/
+    /*top: -104px;*/
+    /*right: -170px;*/
+/*}*/
+
+/*#aqi{*/
+    /*position: relative;*/
+    /*font-size: 20px;*/
+    /*top: -316px;*/
+    /*right: -271px;*/
+/*}*/
+
+/*#qlty{*/
+    /*position: relative;*/
+    /*font-size: 20px;*/
+    /*top: -345px;*/
+    /*right: -301px;*/
+/*}*/
+/*#now{*/
+    /*height: 300px;*/
+    /*width: 400px;*/
+/*}*/
+/*#fl-hum{*/
+    /*position: relative;*/
+    /*font-size: 16px;*/
+    /*top: -202px;*/
+    /*right: -12px;*/
+/*}*/
+/*#other{*/
+    /*position: relative;*/
+    /*font-size: 16px;*/
+    /*top: -202px;*/
+    /*right: -12px;*/
+/*}*/
+
+/*#tab1{*/
+    /*margin:0;*/
+    /*width: 100%;*/
+    /*background-color: lightskyblue;*/
+    /*filter:alpha(opacity=30);*/
+/*}*/
+
+/*!*#get_loc{*!*/
+    /*!*display: inline-block;*!*/
+    /*!*width: 32px;*!*/
+    /*!*height: 32px;*!*/
+    /*!*border: 0px;*!*/
+    /*!*background-color: lightblue;*!*/
+    /*!*opacity:0;*!*/
+
+/*!*}*!*/
+
+/*#life_sty{*/
+    /*position: relative;*/
+    /*font-size: 15px;*/
+    /*top: -427px;*/
+    /*right: -371px;*/
+/*}*/
+
